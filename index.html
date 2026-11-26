@@ -2,7 +2,7 @@
 <html lang="zh-Hant">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>校園整潔巡查與愛校服務整合系統｜導師會報簡報</title>
   <style>
     :root {
@@ -22,16 +22,27 @@
       --text: #0f172a;
       --muted: #475569;
       --border: #cbd5e1;
+      --target-size: 28px;
+    }
+    @media (pointer: coarse) {
+      :root { --target-size: 44px; }
     }
     * { box-sizing: border-box; }
+    html {
+      -webkit-text-size-adjust: 100%;
+      text-size-adjust: 100%;
+      scroll-padding-bottom: calc(4.75rem + env(safe-area-inset-bottom, 0px));
+    }
     html, body {
       margin: 0;
       padding: 0;
-      min-height: 100%;
+      min-height: 100dvh;
       font-family: "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
       background: #0b1626;
       color: var(--text);
+      overflow-wrap: break-word;
     }
+    :where(a, code) { overflow-wrap: anywhere; }
     :where(button, a):focus-visible {
       outline: 3px solid #f59e0b;
       outline-offset: 3px;
@@ -40,12 +51,18 @@
     p, li { text-wrap: pretty; }
 
     .deck-shell {
+      height: 100dvh;
       min-height: 100dvh;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 14px 16px 76px;
+      gap: 8px;
+      padding:
+        max(12px, env(safe-area-inset-top, 0px))
+        max(14px, env(safe-area-inset-right, 0px))
+        calc(74px + env(safe-area-inset-bottom, 0px))
+        max(14px, env(safe-area-inset-left, 0px));
     }
     .progress-bar-wrap {
       position: fixed;
@@ -62,15 +79,36 @@
       background: linear-gradient(90deg, #38bdf8, #34d399);
       transition: width 0.25s ease;
     }
-    .slides-stage {
+    .stage-viewport {
+      flex: 1;
       width: 100%;
-      max-width: 1120px;
-      aspect-ratio: 16 / 9;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      touch-action: pan-y pinch-zoom;
+    }
+    .slides-scaler {
       position: relative;
+      width: 1120px;
+      height: 630px;
+      flex-shrink: 0;
+    }
+    .slides-stage {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 1120px;
+      height: 630px;
+      transform-origin: top left;
+      will-change: transform;
     }
     .slide {
-      width: 100%;
-      height: 100%;
+      width: 1120px;
+      height: 630px;
+      font-size: 16px;
       background: var(--surface);
       border-radius: 18px;
       box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
@@ -96,7 +134,7 @@
     }
     .slide-cover .slide-top { border-bottom-color: rgba(255,255,255,0.2); }
     .slide-kicker {
-      font-size: 0.92rem;
+      font-size: 15px;
       font-weight: 800;
       letter-spacing: 0.06em;
       color: var(--primary);
@@ -104,7 +142,7 @@
     }
     .slide-cover .slide-kicker { color: #7dd3fc; }
     .slide-num-pill {
-      font-size: 0.85rem;
+      font-size: 14px;
       font-weight: 800;
       padding: 4px 12px;
       border-radius: 999px;
@@ -119,14 +157,14 @@
     }
     .slide-title {
       margin: 0 0 14px;
-      font-size: clamp(1.55rem, 2.5vw, 2.15rem);
+      font-size: 33px;
       font-weight: 900;
       line-height: 1.25;
       color: var(--navy);
     }
     .slide-cover .slide-title {
       color: #ffffff;
-      font-size: clamp(2rem, 3.3vw, 2.75rem);
+      font-size: 44px;
       margin-bottom: 12px;
     }
     .slide-body {
@@ -140,7 +178,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 0.84rem;
+      font-size: 13.5px;
       color: var(--muted);
       padding-top: 10px;
       border-top: 1px solid #e2e8f0;
@@ -157,7 +195,7 @@
       align-items: center;
     }
     .cover-sub {
-      font-size: 1.16rem;
+      font-size: 18.5px;
       line-height: 1.62;
       color: #e2e8f0;
       margin: 0 0 18px;
@@ -172,7 +210,7 @@
       border-radius: 999px;
       background: rgba(255,255,255,0.14);
       border: 1px solid rgba(255,255,255,0.28);
-      font-size: 0.95rem;
+      font-size: 15px;
       font-weight: 700;
       color: #ffffff;
     }
@@ -194,12 +232,12 @@
       margin: 0 auto 10px;
     }
     .qr-single-card .qr-label {
-      font-size: 1.05rem;
+      font-size: 17px;
       font-weight: 900;
       color: var(--navy);
     }
     .qr-single-card .qr-sub {
-      font-size: 0.84rem;
+      font-size: 13.5px;
       color: var(--muted);
       margin-top: 3px;
     }
@@ -207,7 +245,7 @@
       display: inline-block;
       margin-top: 8px;
       font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-      font-size: 1.15rem;
+      font-size: 18.5px;
       font-weight: 900;
       color: var(--primary);
       background: var(--primary-soft);
@@ -231,18 +269,18 @@
     .card.card-purple { background: var(--purple-soft); border-color: #d8b4fe; }
     .card h3 {
       margin: 0 0 10px;
-      font-size: 1.16rem;
+      font-size: 18.5px;
       font-weight: 900;
       color: var(--navy);
     }
     .card ul, .card ol {
       margin: 0;
       padding-left: 20px;
-      font-size: 1rem;
+      font-size: 16px;
       line-height: 1.62;
     }
     .card li + li { margin-top: 6px; }
-    .card p { margin: 0 0 8px; font-size: 1rem; line-height: 1.58; }
+    .card p { margin: 0 0 8px; font-size: 16px; line-height: 1.58; }
     .card p:last-child { margin-bottom: 0; }
 
     .hero-url-bar {
@@ -255,9 +293,10 @@
       padding: 14px 22px;
       border-radius: 12px;
       margin-bottom: 16px;
+      font-size: 16px;
     }
     .hero-url-bar code {
-      font-size: 1.38rem;
+      font-size: 22px;
       font-weight: 900;
       color: #7dd3fc;
       background: rgba(255,255,255,0.12);
@@ -270,7 +309,7 @@
       display: inline-block;
       padding: 3px 10px;
       border-radius: 999px;
-      font-size: 0.84rem;
+      font-size: 13.5px;
       font-weight: 800;
     }
     .b-blue { background: #dbeafe; color: #1e40af; }
@@ -302,35 +341,50 @@
       font-weight: 900;
       margin-bottom: 8px;
     }
-    .flow-step strong { display: block; font-size: 1.02rem; margin-bottom: 4px; color: var(--navy); }
-    .flow-step span { font-size: 0.9rem; color: var(--muted); line-height: 1.45; }
+    .flow-step strong { display: block; font-size: 16.5px; margin-bottom: 4px; color: var(--navy); }
+    .flow-step span { font-size: 14.5px; color: var(--muted); line-height: 1.45; }
+
+    .mobile-hint {
+      display: none;
+      margin: 0;
+      font-size: 13px;
+      font-weight: 600;
+      color: #94a3b8;
+      text-align: center;
+      line-height: 1.4;
+    }
 
     .deck-nav {
       position: fixed;
-      bottom: 14px;
+      bottom: max(10px, env(safe-area-inset-bottom, 0px));
       left: 50%;
       transform: translateX(-50%);
+      max-width: calc(100dvw - 20px - env(safe-area-inset-left, 0px) - env(safe-area-inset-right, 0px));
       display: flex;
+      flex-wrap: wrap;
       align-items: center;
-      gap: 10px;
+      justify-content: center;
+      gap: 8px;
       background: rgba(15, 23, 42, 0.92);
       border: 1px solid rgba(255,255,255,0.2);
-      padding: 8px 14px;
+      padding: 6px 12px;
       border-radius: 999px;
       backdrop-filter: blur(8px);
       z-index: 40;
       color: #ffffff;
     }
     .nav-btn {
-      min-block-size: 38px;
+      min-block-size: max(38px, var(--target-size));
+      min-inline-size: var(--target-size);
       padding: 0 14px;
       border-radius: 999px;
       border: 1px solid rgba(255,255,255,0.25);
       background: rgba(255,255,255,0.12);
       color: #ffffff;
       font: inherit;
-      font-size: 0.9rem;
+      font-size: 14px;
       font-weight: 700;
+      white-space: nowrap;
       cursor: pointer;
     }
     .nav-btn:hover:not(:disabled) { background: rgba(255,255,255,0.24); }
@@ -338,14 +392,14 @@
     .nav-btn.primary { background: var(--primary); border-color: var(--primary); }
     .dots-row { display: flex; align-items: center; gap: 6px; padding: 0 4px; }
     .dot-btn {
-      min-block-size: 28px;
-      min-inline-size: 28px;
+      min-block-size: var(--target-size);
+      min-inline-size: var(--target-size);
       border-radius: 999px;
       border: 1px solid rgba(255,255,255,0.35);
       background: transparent;
       color: #cbd5e1;
       font: inherit;
-      font-size: 0.78rem;
+      font-size: 13px;
       font-weight: 800;
       cursor: pointer;
     }
@@ -353,6 +407,14 @@
       background: #38bdf8;
       border-color: #38bdf8;
       color: #091a32;
+    }
+    .nav-page-pill {
+      display: none;
+      font-size: 14px;
+      font-weight: 800;
+      color: #e2e8f0;
+      padding: 0 8px;
+      white-space: nowrap;
     }
     .sr-status {
       position: absolute;
@@ -362,12 +424,52 @@
       clip-path: inset(50%);
     }
 
+    @media (max-width: 720px) and (orientation: portrait) {
+      .mobile-hint { display: block; }
+    }
+    @media (max-width: 780px) {
+      .dots-row, #btn-full, #btn-print { display: none; }
+      .nav-page-pill { display: inline-block; }
+    }
+    @media (max-height: 480px) {
+      .deck-shell {
+        padding:
+          max(6px, env(safe-area-inset-top, 0px))
+          max(10px, env(safe-area-inset-right, 0px))
+          calc(60px + env(safe-area-inset-bottom, 0px))
+          max(10px, env(safe-area-inset-left, 0px));
+      }
+      .deck-nav {
+        bottom: max(6px, env(safe-area-inset-bottom, 0px));
+        padding: 4px 10px;
+      }
+    }
+
     @page { size: A4 landscape; margin: 0; }
     @media print {
-      html, body { background: #ffffff !important; }
-      .progress-bar-wrap, .deck-nav { display: none !important; }
-      .deck-shell { padding: 0; display: block; }
-      .slides-stage { max-width: none; aspect-ratio: auto; }
+      html, body {
+        background: #ffffff !important;
+        min-height: auto !important;
+      }
+      .progress-bar-wrap, .deck-nav, .mobile-hint { display: none !important; }
+      .deck-shell {
+        height: auto !important;
+        min-height: auto !important;
+        padding: 0 !important;
+        display: block !important;
+      }
+      .stage-viewport { display: block !important; }
+      .slides-scaler {
+        width: auto !important;
+        height: auto !important;
+        position: static !important;
+      }
+      .slides-stage {
+        position: static !important;
+        width: auto !important;
+        height: auto !important;
+        transform: none !important;
+      }
       .slide {
         display: flex !important;
         width: 297mm;
@@ -390,7 +492,9 @@
   <div id="slide-live" class="sr-status" aria-live="polite"></div>
 
   <main class="deck-shell" aria-label="導師會報簡報">
-    <div class="slides-stage">
+    <div id="stage-viewport" class="stage-viewport">
+      <div id="slides-scaler" class="slides-scaler">
+        <div id="slides-stage" class="slides-stage">
 
       <section class="slide slide-cover" data-slide="1" data-title="系統導覽封面">
         <div class="slide-top">
@@ -413,7 +517,7 @@
             </div>
             <div>
               <div class="qr-single-card">
-                <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 29 29" shape-rendering="crispEdges" role="img"><title>掃描前往校園整潔與愛校整合系統（https://is.gd/cleancd2）</title><path fill="#ffffff" d="M0 0h29v29H0z"/><path stroke="#000000" d="M2 2.5h7m4 0h1m4 0h1m1 0h7M2 3.5h1m5 0h1m3 0h2m3 0h2m1 0h1m5 0h1M2 4.5h1m1 0h3m1 0h1m1 0h2m4 0h3m1 0h1m1 0h3m1 0h1M2 5.5h1m1 0h3m1 0h1m1 0h1m4 0h3m2 0h1m1 0h3m1 0h1M2 6.5h1m1 0h3m1 0h1m1 0h1m1 0h1m2 0h1m2 0h1m1 0h1m1 0h3m1 0h1M2 7.5h1m5 0h1m1 0h2m2 0h4m2 0h1m5 0h1M2 8.5h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7M10 9.5h2m2 0h1m2 0h2M2 10.5h1m1 0h5m2 0h1m1 0h4m3 0h5M4 11.5h1m2 0h1m1 0h5m4 0h2m1 0h1m3 0h1M4 12.5h2m1 0h2m1 0h1m2 0h1m1 0h1m1 0h2m1 0h2m1 0h1m1 0h2M3 13.5h1m1 0h1m4 0h1m2 0h2m1 0h1m2 0h1m2 0h1m3 0h1M3 14.5h1m2 0h5m2 0h1m1 0h3m2 0h1m1 0h1m1 0h3M2 15.5h2m2 0h2m2 0h3m1 0h1m3 0h1m2 0h1m1 0h1m1 0h1M2 16.5h1m5 0h1m1 0h3m3 0h4m1 0h3m1 0h2M2 17.5h1m3 0h2m2 0h1m3 0h1m3 0h1m2 0h2m3 0h1M2 18.5h1m1 0h3m1 0h1m2 0h2m1 0h2m2 0h5m1 0h1M10 19.5h2m4 0h3m3 0h2M2 20.5h7m4 0h3m2 0h1m1 0h1m1 0h1m1 0h3M2 21.5h1m5 0h1m1 0h2m1 0h1m3 0h2m3 0h2M2 22.5h1m1 0h3m1 0h1m1 0h1m1 0h2m3 0h6m1 0h3M2 23.5h1m1 0h3m1 0h1m1 0h1m1 0h1m1 0h2m1 0h1m1 0h2m1 0h5M2 24.5h1m1 0h3m1 0h1m1 0h3m2 0h2m6 0h2m1 0h1M2 25.5h1m5 0h1m5 0h2m1 0h7m2 0h1M2 26.5h7m1 0h3m1 0h1m1 0h1m2 0h1m1 0h6"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 29 29" shape-rendering="crispEdges" role="img"><title>掃描前往校園整潔與愛校整合系統（https://is.gd/cleancd2）</title><path fill="#ffffff" d="M0 0h29v29H0z"/><path stroke="#000000" d="M2 2.5h7m4 0h1m4 0h1m1 0h7M2 3.5h1m5 0h1m3 0h2m3 0h2m1 0h1m5 0h1M2 4.5h1m1 0h3m1 0h1m1 0h2m4 0h3m1 0h1m1 0h3m1 0h1M2 5.5h1m1 0h3m1 0h1m1 0h1m4 0h3m2 0h1m1 0h3m1 0h1M2 6.5h1m1 0h3m1 0h1m1 0h1m1 0h1m2 0h1m2 0h1m1 0h1m1 0h3m1 0h1M2 7.5h1m5 0h1m1 0h2m2 0h4m2 0h1m5 0h1M2 8.5h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7M10 9.5h2m2 0h1m2 0h2M2 10.5h1m1 0h5m2 0h1m1 0h4m3 0h5M4 11.5h1m2 0h1m1 0h5m4 0h2m1 0h1m3 0h1M4 12.5h2m1 0h2m1 0h1m2 0h1m1 0h1m1 0h2m1 0h2m1 0h1m1 0h2M3 13.5h1m1 0h1m4 0h1m2 0h2m1 0h1m2 0h1m2 0h1m3 0h1M3 14.5h1m2 0h5m2 0h1m1 0h3m2 0h1m1 0h1m1 0h3M2 15.5h2m2 0h2m2 0h3m1 0h1m3 0h1m2 0h1m1 0h1m1 0h1M2 16.5h1m5 0h1m1 0h3m3 0h4m1 0h3m1 0h2M2 17.5h1m3 0h2m2 0h1m3 0h1m3 0h1m2 0h2m3 0h1M2 18.5h1m1 0h3m1 0h1m2 0h2m1 0h2m2 0h5m1 0h1M10 19.5h2m4 0h3m3 0h2M2 20.5h7m4 0h3m2 0h1m1 0h1m1 0h1m1 0h3M2 21.5h1m5 0h1m1 0h2m1 0h1m3 0h2m3 0h2M2 22.5h1m1 0h3m1 0h1m1 0h1m1 0h2m3 0h6m1 0h3M2 23.5h1m1 0h3m1 0h1m1 0h1m1 0h1m1 0h2m1 0h1m1 0h2m1 0h5M2 24.5h1m1 0h3m1 0h1m1 0h3m2 0h2m6 0h2m1 0h1M2 25.5h1m5 0h1m5 0h2m1 0h7m2 0h1M2 26.5h7m1 0h3m1 0h1m1 0h1m2 0h1m1 0h6"/></svg>
                 <div class="qr-label">🔍 全校唯一入口</div>
                 <div class="qr-sub">查缺・設負責人・愛校預約全包含</div>
                 <div class="qr-url">https://is.gd/cleancd2</div>
@@ -647,7 +751,7 @@
             </div>
             <div>
               <div class="qr-single-card">
-                <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 29 29" shape-rendering="crispEdges" role="img"><title>掃描前往校園整潔與愛校整合系統（https://is.gd/cleancd2）</title><path fill="#ffffff" d="M0 0h29v29H0z"/><path stroke="#000000" d="M2 2.5h7m4 0h1m4 0h1m1 0h7M2 3.5h1m5 0h1m3 0h2m3 0h2m1 0h1m5 0h1M2 4.5h1m1 0h3m1 0h1m1 0h2m4 0h3m1 0h1m1 0h3m1 0h1M2 5.5h1m1 0h3m1 0h1m1 0h1m4 0h3m2 0h1m1 0h3m1 0h1M2 6.5h1m1 0h3m1 0h1m1 0h1m1 0h1m2 0h1m2 0h1m1 0h1m1 0h3m1 0h1M2 7.5h1m5 0h1m1 0h2m2 0h4m2 0h1m5 0h1M2 8.5h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7M10 9.5h2m2 0h1m2 0h2M2 10.5h1m1 0h5m2 0h1m1 0h4m3 0h5M4 11.5h1m2 0h1m1 0h5m4 0h2m1 0h1m3 0h1M4 12.5h2m1 0h2m1 0h1m2 0h1m1 0h1m1 0h2m1 0h2m1 0h1m1 0h2M3 13.5h1m1 0h1m4 0h1m2 0h2m1 0h1m2 0h1m2 0h1m3 0h1M3 14.5h1m2 0h5m2 0h1m1 0h3m2 0h1m1 0h1m1 0h3M2 15.5h2m2 0h2m2 0h3m1 0h1m3 0h1m2 0h1m1 0h1m1 0h1M2 16.5h1m5 0h1m1 0h3m3 0h4m1 0h3m1 0h2M2 17.5h1m3 0h2m2 0h1m3 0h1m3 0h1m2 0h2m3 0h1M2 18.5h1m1 0h3m1 0h1m2 0h2m1 0h2m2 0h5m1 0h1M10 19.5h2m4 0h3m3 0h2M2 20.5h7m4 0h3m2 0h1m1 0h1m1 0h1m1 0h3M2 21.5h1m5 0h1m1 0h2m1 0h1m3 0h2m3 0h2M2 22.5h1m1 0h3m1 0h1m1 0h1m1 0h2m3 0h6m1 0h3M2 23.5h1m1 0h3m1 0h1m1 0h1m1 0h1m1 0h2m1 0h1m1 0h2m1 0h5M2 24.5h1m1 0h3m1 0h1m1 0h3m2 0h2m6 0h2m1 0h1M2 25.5h1m5 0h1m5 0h2m1 0h7m2 0h1M2 26.5h7m1 0h3m1 0h1m1 0h1m2 0h1m1 0h6"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 29 29" shape-rendering="crispEdges" role="img"><title>掃描前往校園整潔與愛校整合系統（https://is.gd/cleancd2）</title><path fill="#ffffff" d="M0 0h29v29H0z"/><path stroke="#000000" d="M2 2.5h7m4 0h1m4 0h1m1 0h7M2 3.5h1m5 0h1m3 0h2m3 0h2m1 0h1m5 0h1M2 4.5h1m1 0h3m1 0h1m1 0h2m4 0h3m1 0h1m1 0h3m1 0h1M2 5.5h1m1 0h3m1 0h1m1 0h1m4 0h3m2 0h1m1 0h3m1 0h1M2 6.5h1m1 0h3m1 0h1m1 0h1m1 0h1m2 0h1m2 0h1m1 0h1m1 0h3m1 0h1M2 7.5h1m5 0h1m1 0h2m2 0h4m2 0h1m5 0h1M2 8.5h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7M10 9.5h2m2 0h1m2 0h2M2 10.5h1m1 0h5m2 0h1m1 0h4m3 0h5M4 11.5h1m2 0h1m1 0h5m4 0h2m1 0h1m3 0h1M4 12.5h2m1 0h2m1 0h1m2 0h1m1 0h1m1 0h2m1 0h2m1 0h1m1 0h2M3 13.5h1m1 0h1m4 0h1m2 0h2m1 0h1m2 0h1m2 0h1m3 0h1M3 14.5h1m2 0h5m2 0h1m1 0h3m2 0h1m1 0h1m1 0h3M2 15.5h2m2 0h2m2 0h3m1 0h1m3 0h1m2 0h1m1 0h1m1 0h1M2 16.5h1m5 0h1m1 0h3m3 0h4m1 0h3m1 0h2M2 17.5h1m3 0h2m2 0h1m3 0h1m3 0h1m2 0h2m3 0h1M2 18.5h1m1 0h3m1 0h1m2 0h2m1 0h2m2 0h5m1 0h1M10 19.5h2m4 0h3m3 0h2M2 20.5h7m4 0h3m2 0h1m1 0h1m1 0h1m1 0h3M2 21.5h1m5 0h1m1 0h2m1 0h1m3 0h2m3 0h2M2 22.5h1m1 0h3m1 0h1m1 0h1m1 0h2m3 0h6m1 0h3M2 23.5h1m1 0h3m1 0h1m1 0h1m1 0h1m1 0h2m1 0h1m1 0h2m1 0h5M2 24.5h1m1 0h3m1 0h1m1 0h3m2 0h2m6 0h2m1 0h1M2 25.5h1m5 0h1m5 0h2m1 0h7m2 0h1M2 26.5h7m1 0h3m1 0h1m1 0h1m2 0h1m1 0h6"/></svg>
                 <div class="qr-label">🔍 全校唯一入口</div>
                 <div class="qr-sub">查缺・設負責人・愛校預約</div>
                 <div class="qr-url">https://is.gd/cleancd2</div>
@@ -661,12 +765,16 @@
         </footer>
       </section>
 
+        </div>
+      </div>
+      <p id="mobile-hint" class="mobile-hint" aria-hidden="true">💡 橫拿手機觀看更大 ｜ 左右滑動可換頁 ｜ 雙指可放大</p>
     </div>
   </main>
 
   <nav class="deck-nav" aria-label="簡報控制列">
     <button id="btn-prev" type="button" class="nav-btn">◀ 上一頁</button>
     <div id="dots-row" class="dots-row" aria-label="快速跳頁"></div>
+    <span id="nav-page-pill" class="nav-page-pill" aria-hidden="true">1 / 8</span>
     <button id="btn-next" type="button" class="nav-btn primary">下一頁 ▶</button>
     <button id="btn-full" type="button" class="nav-btn">⛶ 全螢幕</button>
     <button id="btn-print" type="button" class="nav-btn">🖨️ 存PDF</button>
@@ -674,16 +782,36 @@
 
   <script>
     (() => {
+      const BASE_W = 1120;
+      const BASE_H = 630;
       const slides = Array.from(document.querySelectorAll('.slide'));
       const total = slides.length;
       const fill = document.getElementById('progress-fill');
       const live = document.getElementById('slide-live');
       const dotsRow = document.getElementById('dots-row');
+      const navPagePill = document.getElementById('nav-page-pill');
       const btnPrev = document.getElementById('btn-prev');
       const btnNext = document.getElementById('btn-next');
       const btnFull = document.getElementById('btn-full');
       const btnPrint = document.getElementById('btn-print');
+      const stageViewport = document.getElementById('stage-viewport');
+      const slidesScaler = document.getElementById('slides-scaler');
+      const slidesStage = document.getElementById('slides-stage');
+      const mobileHint = document.getElementById('mobile-hint');
       let cur = 0;
+
+      function fitStage() {
+        if (!stageViewport || !slidesScaler || !slidesStage) return;
+        const rect = stageViewport.getBoundingClientRect();
+        const hintVisible = mobileHint && window.getComputedStyle(mobileHint).display !== 'none';
+        const hintReserve = hintVisible ? (mobileHint.getBoundingClientRect().height + 10) : 0;
+        const availW = Math.max(120, rect.width);
+        const availH = Math.max(80, rect.height - hintReserve);
+        const scale = Math.max(0.1, Math.min(availW / BASE_W, availH / BASE_H));
+        slidesScaler.style.width = `${Math.round(BASE_W * scale)}px`;
+        slidesScaler.style.height = `${Math.round(BASE_H * scale)}px`;
+        slidesStage.style.transform = `scale(${scale})`;
+      }
 
       slides.forEach((_, idx) => {
         const b = document.createElement('button');
@@ -706,6 +834,7 @@
           if (i === cur) dot.setAttribute('aria-current', 'step');
           else dot.removeAttribute('aria-current');
         });
+        if (navPagePill) navPagePill.textContent = `${cur + 1} / ${total}`;
         fill.style.width = `${((cur + 1) / total) * 100}%`;
         btnPrev.disabled = cur === 0;
         btnNext.disabled = cur === total - 1;
@@ -743,7 +872,47 @@
         }
       });
 
+      let touchActive = false;
+      let touchStartX = 0;
+      let touchStartY = 0;
+      if (stageViewport) {
+        stageViewport.addEventListener('touchstart', (e) => {
+          if (e.touches.length !== 1) {
+            touchActive = false;
+            return;
+          }
+          touchActive = true;
+          touchStartX = e.touches[0].clientX;
+          touchStartY = e.touches[0].clientY;
+        }, { passive: true });
+        stageViewport.addEventListener('touchmove', (e) => {
+          if (e.touches.length > 1) touchActive = false;
+        }, { passive: true });
+        stageViewport.addEventListener('touchend', (e) => {
+          if (!touchActive || e.changedTouches.length !== 1) {
+            touchActive = false;
+            return;
+          }
+          touchActive = false;
+          const dx = e.changedTouches[0].clientX - touchStartX;
+          const dy = e.changedTouches[0].clientY - touchStartY;
+          if (Math.abs(dx) >= 48 && Math.abs(dx) > Math.abs(dy) * 1.3) {
+            if (dx < 0) goTo(cur + 1);
+            else goTo(cur - 1);
+          }
+        }, { passive: true });
+      }
+
+      if (typeof ResizeObserver === 'function' && stageViewport) {
+        new ResizeObserver(fitStage).observe(stageViewport);
+      }
+      window.addEventListener('resize', fitStage);
+      window.addEventListener('orientationchange', () => setTimeout(fitStage, 80));
+      document.addEventListener('fullscreenchange', () => setTimeout(fitStage, 80));
+      window.visualViewport?.addEventListener('resize', fitStage);
+
       goTo(0);
+      fitStage();
     })();
   </script>
 </body>
