@@ -214,6 +214,8 @@
     }
 
     .qr-single-card {
+      display: block;
+      text-decoration: none;
       background: var(--surface);
       color: var(--ink);
       border-radius: 4px;
@@ -222,6 +224,15 @@
       border: 1px solid var(--line-strong);
       max-width: 280px;
       margin: 0 auto;
+      transition: border-color 0.18s ease, background-color 0.18s ease;
+    }
+    .qr-single-card:hover {
+      border-color: var(--muji-red);
+      background: #FFFFFF;
+    }
+    .qr-single-card:hover .qr-url {
+      background: var(--muji-red);
+      color: #FFFFFF;
     }
     .qr-single-card svg {
       width: 172px;
@@ -324,7 +335,10 @@
       font-size: 17px;
       font-weight: 700;
     }
-    .hero-url-bar code {
+    .hero-url-bar code,
+    .hero-url-bar a.hero-url-link {
+      display: inline-block;
+      text-decoration: none;
       font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
       font-size: 22px;
       font-weight: 800;
@@ -334,6 +348,11 @@
       padding: 4px 14px;
       border-radius: 3px;
       letter-spacing: 0.02em;
+      transition: background-color 0.18s ease, color 0.18s ease;
+    }
+    .hero-url-bar a.hero-url-link:hover {
+      background: var(--muji-red);
+      color: #FFFFFF;
     }
 
     .note-strip {
@@ -382,13 +401,20 @@
       color: var(--muted);
       line-height: 1.5;
     }
-    .action-text code {
+    .action-text code,
+    .action-text a.inline-url-link {
+      text-decoration: none;
       font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
       color: var(--muji-red);
       font-weight: 700;
       background: var(--muji-red-soft);
       padding: 1px 6px;
       border-radius: 2px;
+      transition: background-color 0.18s ease, color 0.18s ease;
+    }
+    .action-text a.inline-url-link:hover {
+      background: var(--muji-red);
+      color: #FFFFFF;
     }
 
     .mobile-hint {
@@ -561,12 +587,12 @@
                   <span class="cover-meta">免下載 App ・ 手機與教室電腦直接開啟</span>
                 </div>
                 <div>
-                  <div class="qr-single-card">
+                  <a class="qr-single-card" href="https://is.gd/cleancd2" target="_blank" rel="noopener noreferrer" aria-label="開啟校園整潔巡查與愛校服務整合系統（https://is.gd/cleancd2，另開新分頁）">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 29 29" shape-rendering="crispEdges" role="img"><title>掃描前往校園整潔與愛校整合系統（https://is.gd/cleancd2）</title><path fill="#ffffff" d="M0 0h29v29H0z"/><path stroke="#000000" d="M2 2.5h7m4 0h1m4 0h1m1 0h7M2 3.5h1m5 0h1m3 0h2m3 0h2m1 0h1m5 0h1M2 4.5h1m1 0h3m1 0h1m1 0h2m4 0h3m1 0h1m1 0h3m1 0h1M2 5.5h1m1 0h3m1 0h1m1 0h1m4 0h3m2 0h1m1 0h3m1 0h1M2 6.5h1m1 0h3m1 0h1m1 0h1m1 0h1m2 0h1m2 0h1m1 0h1m1 0h3m1 0h1M2 7.5h1m5 0h1m1 0h2m2 0h4m2 0h1m5 0h1M2 8.5h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7M10 9.5h2m2 0h1m2 0h2M2 10.5h1m1 0h5m2 0h1m1 0h4m3 0h5M4 11.5h1m2 0h1m1 0h5m4 0h2m1 0h1m3 0h1M4 12.5h2m1 0h2m1 0h1m2 0h1m1 0h1m1 0h2m1 0h2m1 0h1m1 0h2M3 13.5h1m1 0h1m4 0h1m2 0h2m1 0h1m2 0h1m2 0h1m3 0h1M3 14.5h1m2 0h5m2 0h1m1 0h3m2 0h1m1 0h1m1 0h3M2 15.5h2m2 0h2m2 0h3m1 0h1m3 0h1m2 0h1m1 0h1m1 0h1M2 16.5h1m5 0h1m1 0h3m3 0h4m1 0h3m1 0h2M2 17.5h1m3 0h2m2 0h1m3 0h1m3 0h1m2 0h2m3 0h1M2 18.5h1m1 0h3m1 0h1m2 0h2m1 0h2m2 0h5m1 0h1M10 19.5h2m4 0h3m3 0h2M2 20.5h7m4 0h3m2 0h1m1 0h1m1 0h1m1 0h3M2 21.5h1m5 0h1m1 0h2m1 0h1m3 0h2m3 0h2M2 22.5h1m1 0h3m1 0h1m1 0h1m1 0h2m3 0h6m1 0h3M2 23.5h1m1 0h3m1 0h1m1 0h1m1 0h1m1 0h2m1 0h1m1 0h2m1 0h5M2 24.5h1m1 0h3m1 0h1m1 0h3m2 0h2m6 0h2m1 0h1M2 25.5h1m5 0h1m5 0h2m1 0h7m2 0h1M2 26.5h7m1 0h3m1 0h1m1 0h1m2 0h1m1 0h6"/></svg>
                     <div class="qr-label">全校唯一入口</div>
                     <div class="qr-sub">查缺 ・ 設負責人 ・ 愛校預約</div>
                     <div class="qr-url">https://is.gd/cleancd2</div>
-                  </div>
+                  </a>
                 </div>
               </div>
             </div>
@@ -616,7 +642,7 @@
               <h2 class="slide-title">記 1 個短網址，免登入看 2 件事</h2>
               <div class="hero-url-bar">
                 <span>全校統一入口</span>
-                <code>https://is.gd/cleancd2</code>
+                <a class="hero-url-link" href="https://is.gd/cleancd2" target="_blank" rel="noopener noreferrer">https://is.gd/cleancd2</a>
               </div>
               <div class="grid-2">
                 <article class="muji-card">
@@ -773,7 +799,7 @@
                     <span class="action-num">01</span>
                     <div class="action-text">
                       <h3>更新教室電腦書籤</h3>
-                      <p>將舊網址改為 <code>https://is.gd/cleancd2</code>（附圖解講義）</p>
+                      <p>將舊網址改為 <a class="inline-url-link" href="https://is.gd/cleancd2" target="_blank" rel="noopener noreferrer">https://is.gd/cleancd2</a>（附圖解講義）</p>
                     </div>
                   </div>
                   <div class="action-item">
@@ -792,12 +818,12 @@
                   </div>
                 </div>
                 <div>
-                  <div class="qr-single-card">
+                  <a class="qr-single-card" href="https://is.gd/cleancd2" target="_blank" rel="noopener noreferrer" aria-label="開啟校園整潔巡查與愛校服務整合系統（https://is.gd/cleancd2，另開新分頁）">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 29 29" shape-rendering="crispEdges" role="img"><title>掃描前往校園整潔與愛校整合系統（https://is.gd/cleancd2）</title><path fill="#ffffff" d="M0 0h29v29H0z"/><path stroke="#000000" d="M2 2.5h7m4 0h1m4 0h1m1 0h7M2 3.5h1m5 0h1m3 0h2m3 0h2m1 0h1m5 0h1M2 4.5h1m1 0h3m1 0h1m1 0h2m4 0h3m1 0h1m1 0h3m1 0h1M2 5.5h1m1 0h3m1 0h1m1 0h1m4 0h3m2 0h1m1 0h3m1 0h1M2 6.5h1m1 0h3m1 0h1m1 0h1m1 0h1m2 0h1m2 0h1m1 0h1m1 0h3m1 0h1M2 7.5h1m5 0h1m1 0h2m2 0h4m2 0h1m5 0h1M2 8.5h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7M10 9.5h2m2 0h1m2 0h2M2 10.5h1m1 0h5m2 0h1m1 0h4m3 0h5M4 11.5h1m2 0h1m1 0h5m4 0h2m1 0h1m3 0h1M4 12.5h2m1 0h2m1 0h1m2 0h1m1 0h1m1 0h2m1 0h2m1 0h1m1 0h2M3 13.5h1m1 0h1m4 0h1m2 0h2m1 0h1m2 0h1m2 0h1m3 0h1M3 14.5h1m2 0h5m2 0h1m1 0h3m2 0h1m1 0h1m1 0h3M2 15.5h2m2 0h2m2 0h3m1 0h1m3 0h1m2 0h1m1 0h1m1 0h1M2 16.5h1m5 0h1m1 0h3m3 0h4m1 0h3m1 0h2M2 17.5h1m3 0h2m2 0h1m3 0h1m3 0h1m2 0h2m3 0h1M2 18.5h1m1 0h3m1 0h1m2 0h2m1 0h2m2 0h5m1 0h1M10 19.5h2m4 0h3m3 0h2M2 20.5h7m4 0h3m2 0h1m1 0h1m1 0h1m1 0h3M2 21.5h1m5 0h1m1 0h2m1 0h1m3 0h2m3 0h2M2 22.5h1m1 0h3m1 0h1m1 0h1m1 0h2m3 0h6m1 0h3M2 23.5h1m1 0h3m1 0h1m1 0h1m1 0h1m1 0h2m1 0h1m1 0h2m1 0h5M2 24.5h1m1 0h3m1 0h1m1 0h3m2 0h2m6 0h2m1 0h1M2 25.5h1m5 0h1m5 0h2m1 0h7m2 0h1M2 26.5h7m1 0h3m1 0h1m1 0h1m2 0h1m1 0h6"/></svg>
                     <div class="qr-label">全校唯一入口</div>
                     <div class="qr-sub">查缺 ・ 設負責人 ・ 愛校預約</div>
                     <div class="qr-url">https://is.gd/cleancd2</div>
-                  </div>
+                  </a>
                 </div>
               </div>
             </div>
